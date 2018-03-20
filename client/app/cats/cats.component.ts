@@ -94,13 +94,6 @@ export class CatsComponent implements OnInit {
 	
   }
   
-  displayCats(site, cats) {
-	  console.log(site);
-	  for(let cat in cats){
-		  console.log(cat.site);
-	  }
-  }
-  
   deleteCat(cat: Cat) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.catService.deleteCat(cat).subscribe(
