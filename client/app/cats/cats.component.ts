@@ -10,33 +10,42 @@ import { Cat } from '../shared/models/cat.model';
   templateUrl: './cats.component.html',
   styleUrls: ['./cats.component.css']
 })
-export class CatsComponent implements OnInit {
 
+export class CatsComponent implements OnInit {
+  
   cat = new Cat();
   cats: Cat[] = [];
   isLoading = true;
   isEditing = false;
+  
 
   addCatForm: FormGroup;
   name = new FormControl('', Validators.required);
-  age = new FormControl('', Validators.required);
-  weight = new FormControl('', Validators.required);
-
+  pass = new FormControl('', Validators.required);
+  site = new FormControl('', Validators.required);
+  user = new FormControl('');
+  show = false;
+  showAll = false;
   constructor(private catService: CatService,
               private formBuilder: FormBuilder,
               public toast: ToastComponent) { }
 
   ngOnInit() {
     this.getCats();
+	let user1 = document.getElementById("getUserFrom").innerHTML.split('(')[1];
+	user1 = user1.split(')')[0];
     this.addCatForm = this.formBuilder.group({
       name: this.name,
-      age: this.age,
-      weight: this.weight
+      pass: this.pass,
+      site: this.site,
+	  user: user1,
     });
   }
 
   getCats() {
-    this.catService.getCats().subscribe(
+	let user = document.getElementById("getUserFrom").innerHTML.split('(')[1];
+	user = user.split(')')[0];
+    this.catService.getCats(user).subscribe(
       data => this.cats = data,
       error => console.log(error),
       () => this.isLoading = false
@@ -78,6 +87,20 @@ export class CatsComponent implements OnInit {
     );
   }
 
+  toggleCat(cat: Cat) { 
+	console.log("toggling");
+	if(cat.show){cat.show=false;}
+	else{cat.show=true;}
+	
+  }
+  
+  displayCats(site, cats) {
+	  console.log(site);
+	  for(let cat in cats){
+		  console.log(cat.site);
+	  }
+  }
+  
   deleteCat(cat: Cat) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.catService.deleteCat(cat).subscribe(
@@ -92,3 +115,19 @@ export class CatsComponent implements OnInit {
   }
 
 }
+
+let showCat = false;
+  
+  function toggleCat(){ 
+  showCat = !showCat;}
+
+//invalid solution
+//var user = document.getElementById("getUserFrom").innerHTML.split("(\(|\))")[1];
+//console.log(user);
+/*window.onload = function(){
+	
+	let user = document.getElementById("getUserFrom").innerHTML.split('(')[1];
+	user = user.split(')')[0];
+	(<HTMLInputElement>document.getElementById("catUser")).value = user;
+	//(<HTMLInputElement>document.getElementById("catUser")).class += "ng-valid";
+};*/

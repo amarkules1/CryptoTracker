@@ -2,8 +2,11 @@ import * as mongoose from 'mongoose';
 
 const catSchema = new mongoose.Schema({
   name: String,
-  weight: Number,
-  age: Number
+  pass: String,
+  site: String,
+  user: String,
+  show: {type : Boolean, default: false},
+  showAll: {type : Boolean, default: false}
 });
 
 const Cat = mongoose.model('Cat', catSchema);

@@ -3,4 +3,7 @@ export class Cat {
   name?: string;
   weight?: number;
   age?: number;
+  user?: string;
+  show?: boolean;
+  showAll?: boolean;
 }

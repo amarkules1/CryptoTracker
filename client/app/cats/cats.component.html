@@ -3,30 +3,32 @@
 <app-toast [message]="toast.message"></app-toast>
 
 <div class="card mb-3" *ngIf="!isLoading">
-  <h4 class="card-header">Current cats ({{cats.length}})</h4>
+  <h4 class="card-header">Current Items ({{cats.length}})</h4>
   <div class="card-body">
-    <table class="table table-bordered">
+    
+	<table class="table table-bordered">
       <thead class="thead-light">
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Age</th>
-          <th scope="col">Weight</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Website</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody *ngIf="cats.length === 0">
         <tr>
-          <td colspan="4">There are no cats in the DB. Add a new cat below.</td>
+          <td colspan="4">There are no usernames in the vault. Add a new item below.</td>
         </tr>  
       </tbody>
       <tbody *ngIf="!isEditing">
         <tr *ngFor="let cat of cats">
-          <td>{{cat.name}}</td>
-          <td>{{cat.age}}</td>
-          <td>{{cat.weight}}</td>
-          <td>
+          <td *ngIf="cat.site==selectedSite"><p *ngIf="cat.show">{{cat.name}}</p><p *ngIf="!cat.show">*****</p></td>
+          <td *ngIf="cat.site==selectedSite"><p *ngIf="cat.show">{{cat.pass}}</p><p *ngIf="!cat.show">*****</p></td>
+          <td *ngIf="cat.site==selectedSite">{{cat.site}}</td>
+          <td *ngIf="cat.site==selectedSite">
             <button class="btn btn-sm btn-primary" (click)="enableEditing(cat)"><i class="fa fa-pencil"></i> Edit</button> 
             <button class="btn btn-sm btn-danger" (click)="deleteCat(cat)"><i class="fa fa-trash"></i> Delete</button>
+			<button class="btn btn-sm btn-primary" (click)="cat.show=!cat.show"><i class="fa fa-eye"></i>{{cat.show ? 'Hide' : 'Show'}}</button>
           </td>
         </tr>  
       </tbody>
@@ -34,9 +36,9 @@
         <tr>
           <td colspan="4">
             <form class="form-inline" #form="ngForm" (ngSubmit)="editCat(cat)">
-              <input class="form-control mr-2" type="text" name="name" [(ngModel)]="cat.name" placeholder="Name" required>
-              <input class="form-control mr-2" type="number" name="age" [(ngModel)]="cat.age" placeholder="Age" min="0" required>
-              <input class="form-control mr-2" type="number" name="weight" [(ngModel)]="cat.weight" placeholder="Weight" step="any" min="0" required>
+              <input class="form-control mr-2" type="text" name="name" [(ngModel)]="cat.name" placeholder="Username" required>
+              <input class="form-control mr-2" type="text" name="pass" [(ngModel)]="cat.pass" placeholder="Password" required>
+              <input class="form-control mr-2" type="text" name="site" [(ngModel)]="cat.site" placeholder="Website" required>
               <button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
               <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
             </form>
@@ -46,14 +48,23 @@
     </table>
   </div>
 </div>
-
 <div class="card" *ngIf="!isEditing">
-  <h4 class="card-header">Add new cat</h4>
+  <h4 class="card-header">select site</h4>
+  <div class="card-body">
+<select [(ngModel)]="selectedSite">
+	<option *ngFor="let cat of cats" value="{{cat.site}}" >{{cat.site}}</option>
+</select>
+<button class="btn btn-sm btn-primary" (click)="displayCats(selectedSite, cats)">Filter</button>
+</div>
+</div>
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new username</h4>
   <div class="card-body">
     <form class="form-inline" [formGroup]="addCatForm" (ngSubmit)="addCat()">
-      <input class="form-control mr-2" type="text" name="name" formControlName="name" placeholder="Name">
-      <input class="form-control mr-2" type="number" name="weight" formControlName="weight" placeholder="Weight" step="any" min="0">
-      <input class="form-control mr-2" type="number" name="age" formControlName="age" placeholder="Age" min="0">
+      <input class="form-control mr-2" type="text" name="name" formControlName="name" placeholder="Username">
+      <input class="form-control mr-2" type="text" name="pass" formControlName="pass" placeholder="Password">
+      <input class="form-control mr-2" type="text" name="site" formControlName="site" placeholder="Website">
+	  <!--<input class="form-control mr-2" type="text" name="user" formControlName="user" id="catUser">-->
       <button class="btn btn-primary" type="submit" [disabled]="!addCatForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
     </form>
   </div>

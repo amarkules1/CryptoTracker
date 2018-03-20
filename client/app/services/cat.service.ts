@@ -8,9 +8,9 @@ import { Cat } from '../shared/models/cat.model';
 export class CatService {
 
   constructor(private http: HttpClient) { }
-
-  getCats(): Observable<Cat[]> {
-    return this.http.get<Cat[]>('/api/cats');
+//figure out how to add username here
+  getCats(userName): Observable<Cat[]> {
+    return this.http.get<Cat[]>('/api/cats/' + userName);
   }
 
   countCats(): Observable<number> {
@@ -18,6 +18,7 @@ export class CatService {
   }
 
   addCat(cat: Cat): Observable<Cat> {
+	  console.log(cat);
     return this.http.post<Cat>('/api/cat', cat);
   }
 
