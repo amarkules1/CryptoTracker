@@ -20,12 +20,11 @@ export class CatsComponent implements OnInit {
   
 
   addCatForm: FormGroup;
-  name = new FormControl('', Validators.required);
-  pass = new FormControl('', Validators.required);
-  site = new FormControl('', Validators.required);
+  coin = new FormControl('', Validators.required);
+  amount = new FormControl('', Validators.required);
+  type = new FormControl('');
   user = new FormControl('');
-  show = false;
-  showAll = false;
+  
   constructor(private catService: CatService,
               private formBuilder: FormBuilder,
               public toast: ToastComponent) { }
@@ -34,10 +33,11 @@ export class CatsComponent implements OnInit {
     this.getCats();
 	let user1 = document.getElementById("getUserFrom").innerHTML.split('(')[1];
 	user1 = user1.split(')')[0];
+	
     this.addCatForm = this.formBuilder.group({
-      name: this.name,
-      pass: this.pass,
-      site: this.site,
+      coin: this.coin,
+      amount: this.amount,
+      type: this.type,
 	  user: user1,
     });
   }
@@ -53,6 +53,7 @@ export class CatsComponent implements OnInit {
   }
 
   addCat() {
+	  
     this.catService.addCat(this.addCatForm.value).subscribe(
       res => {
         this.cats.push(res);
@@ -86,13 +87,6 @@ export class CatsComponent implements OnInit {
       error => console.log(error)
     );
   }
-
-  toggleCat(cat: Cat) { 
-	console.log("toggling");
-	if(cat.show){cat.show=false;}
-	else{cat.show=true;}
-	
-  }
   
   deleteCat(cat: Cat) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
@@ -108,12 +102,25 @@ export class CatsComponent implements OnInit {
   }
 
 }
+var listedCoins;
 
-let showCat = false;
-  
-  function toggleCat(){ 
-  showCat = !showCat;}
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.withCredentials = true;
+xmlhttp.onreadystatechange = function() {
+if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+	listedCoins = xmlhttp.responseText
+	}}
+xmlhttp.open('GET', 'http://www.cryptocompare.com/api/data/coinlist/');
+xmlhttp.send();
 
+var coinExists = function(){
+	var abbr = document.getElementById('coinName').value;
+	if(listedCoins[abbr]){
+		document.getElementById('coinName').style="background-color:black";
+	}else{
+		document.getElementById('coinName').style="background-color:red";
+	}
+}
 //invalid solution
 //var user = document.getElementById("getUserFrom").innerHTML.split("(\(|\))")[1];
 //console.log(user);

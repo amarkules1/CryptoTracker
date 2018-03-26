@@ -1,12 +1,11 @@
 import * as mongoose from 'mongoose';
 
 const catSchema = new mongoose.Schema({
-  name: String,
-  pass: String,
-  site: String,
+  coin: String,
+  amount: Number,
+  type: String,
   user: String,
-  show: {type : Boolean, default: false},
-  showAll: {type : Boolean, default: false}
+  date: { type: Date, default: Date.now }
 });
 
 const Cat = mongoose.model('Cat', catSchema);

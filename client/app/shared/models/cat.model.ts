@@ -1,9 +1,7 @@
 export class Cat {
   _id?: string;
-  name?: string;
-  weight?: number;
-  age?: number;
+  coin?: string;
+  amount?: number;
+  type?: string;
   user?: string;
-  show?: boolean;
-  showAll?: boolean;
 }

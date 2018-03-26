@@ -5,30 +5,30 @@
 <div class="card mb-3" *ngIf="!isLoading">
   <h4 class="card-header">Current Items ({{cats.length}})</h4>
   <div class="card-body">
-    
 	<table class="table table-bordered">
       <thead class="thead-light">
         <tr>
-          <th scope="col">Username</th>
-          <th scope="col">Password</th>
-          <th scope="col">Website</th>
+          <th scope="col">Coin</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Date</th>
+		  <th scope="col">Buy/Sell</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody *ngIf="cats.length === 0">
         <tr>
-          <td colspan="4">There are no usernames in the vault. Add a new item below.</td>
+          <td colspan="4">There are no logged transactions. Add a new item below.</td>
         </tr>  
       </tbody>
-      <tbody *ngIf="!isEditing">
+      <tbody *ngIf="!isEditing" id="tableBody">
         <tr *ngFor="let cat of cats">
-          <td *ngIf="cat.site==selectedSite"><p *ngIf="cat.show">{{cat.name}}</p><p *ngIf="!cat.show">*****</p></td>
-          <td *ngIf="cat.site==selectedSite"><p *ngIf="cat.show">{{cat.pass}}</p><p *ngIf="!cat.show">*****</p></td>
-          <td *ngIf="cat.site==selectedSite">{{cat.site}}</td>
-          <td *ngIf="cat.site==selectedSite">
-            <button class="btn btn-sm btn-primary" (click)="enableEditing(cat)"><i class="fa fa-pencil"></i> Edit</button> 
+          <td>{{cat.coin}}</td>
+          <td>{{cat.amount}}</td>
+          <td>{{cat.date.substr(0,10)}}</td>
+		  <td>{{cat.type}}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="enableEditing(cat)"><i class="fa fa-pencil"></i> Edit</button>
             <button class="btn btn-sm btn-danger" (click)="deleteCat(cat)"><i class="fa fa-trash"></i> Delete</button>
-			<button class="btn btn-sm btn-primary" (click)="cat.show=!cat.show"><i class="fa fa-eye"></i>{{cat.show ? 'Hide' : 'Show'}}</button>
           </td>
         </tr>  
       </tbody>
@@ -36,9 +36,12 @@
         <tr>
           <td colspan="4">
             <form class="form-inline" #form="ngForm" (ngSubmit)="editCat(cat)">
-              <input class="form-control mr-2" type="text" name="name" [(ngModel)]="cat.name" placeholder="Username" required>
-              <input class="form-control mr-2" type="text" name="pass" [(ngModel)]="cat.pass" placeholder="Password" required>
-              <input class="form-control mr-2" type="text" name="site" [(ngModel)]="cat.site" placeholder="Website" required>
+              <input class="form-control mr-2" type="text" name="coin" [(ngModel)]="cat.coin" placeholder="Coin" required>
+              <input class="form-control mr-2" type="text" name="amount" [(ngModel)]="cat.amount" placeholder="Amount" required>
+			  <select class="form-control mr-2" name="type" [(ngModel)]="cat.type" required>
+				<option value="Buy" >Buy</option>
+				<option value="Sell" >Sell</option>
+			  </select>
               <button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
               <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
             </form>
@@ -51,8 +54,9 @@
 <div class="card" *ngIf="!isEditing">
   <h4 class="card-header">select site</h4>
   <div class="card-body">
-<select [(ngModel)]="selectedSite">
-	<option *ngFor="let cat of cats" value="{{cat.site}}" >{{cat.site}}</option>
+<select class="form-control mr-2" name="type" [(ngModel)]="cat.type" required>
+	<option value="Buy" >Buy</option>
+	<option value="Sell" >Sell</option>
 </select>
 <button class="btn btn-sm btn-primary" (click)="displayCats(selectedSite, cats)">Filter</button>
 </div>
@@ -61,9 +65,12 @@
   <h4 class="card-header">Add new username</h4>
   <div class="card-body">
     <form class="form-inline" [formGroup]="addCatForm" (ngSubmit)="addCat()">
-      <input class="form-control mr-2" type="text" name="name" formControlName="name" placeholder="Username">
-      <input class="form-control mr-2" type="text" name="pass" formControlName="pass" placeholder="Password">
-      <input class="form-control mr-2" type="text" name="site" formControlName="site" placeholder="Website">
+	  <input class="form-control mr-2" id='coinName' onkeydown="coinExists()" type="text" name="coin" [(ngModel)]="cat.coin" placeholder="Coin" formControlName="coin" required>
+      <input class="form-control mr-2" type="text" name="amount" [(ngModel)]="cat.amount" placeholder="Amount" formControlName="amount" required>
+	  <select class="form-control mr-2" name="type" [(ngModel)]="cat.type" formControlName="type" required>
+		<option value="Buy" >Buy</option>
+		<option value="Sell" >Sell</option>
+	  </select>
 	  <!--<input class="form-control mr-2" type="text" name="user" formControlName="user" id="catUser">-->
       <button class="btn btn-primary" type="submit" [disabled]="!addCatForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
     </form>
