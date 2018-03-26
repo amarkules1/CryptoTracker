@@ -102,25 +102,7 @@ export class CatsComponent implements OnInit {
   }
 
 }
-var listedCoins;
 
-var xmlhttp = new XMLHttpRequest();
-xmlhttp.withCredentials = true;
-xmlhttp.onreadystatechange = function() {
-if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-	listedCoins = xmlhttp.responseText
-	}}
-xmlhttp.open('GET', 'http://www.cryptocompare.com/api/data/coinlist/');
-xmlhttp.send();
-
-var coinExists = function(){
-	var abbr = document.getElementById('coinName').value;
-	if(listedCoins[abbr]){
-		document.getElementById('coinName').style="background-color:black";
-	}else{
-		document.getElementById('coinName').style="background-color:red";
-	}
-}
 //invalid solution
 //var user = document.getElementById("getUserFrom").innerHTML.split("(\(|\))")[1];
 //console.log(user);
