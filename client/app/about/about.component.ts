@@ -32,15 +32,15 @@ var combine = function(json){
 	var i = 0;
 	for(i=0;i<json.length;i++){
 		var thisCoin = json[i]["coin"];
-		if(typeof coins.thisCoin !== 'undefined'){
+		if(coins[thisCoin]!=undefined){
 			if(json[i]["type"]==="Sell"){
 				coins[thisCoin] -=json[i]["amount"];
 			}
 			else{
 				coins[thisCoin] +=json[i]["amount"];
 			}
+			getPrice(thisCoin);
 		}else{
-			console.log(thisCoin);
 			coinNames.push(thisCoin);
 			coins[thisCoin] =json[i]["amount"];
 			getPrice(thisCoin);
@@ -53,7 +53,6 @@ var getPrice = function(thisCoin){
 	xhr2.onreadystatechange = function() {
 		if(xhr2.readyState === 4 && xhr2.status === 200) {
 			respond = JSON.parse(xhr2.responseText);
-			console.log(respond["USD"])
 			prices[thisCoin] = respond["USD"];
 			setTable();
 		}
@@ -62,11 +61,9 @@ var getPrice = function(thisCoin){
 	xhr2.send()
 };
 var setTable = function(){
-	console.log("setting table");
 	var tb = document.getElementById('tb');
 	tb.innerHTML = "";
 	coinNames.forEach(function(coin){
-		console.log(coins[coin])
 		var worth = coins[coin] * prices[coin];
 		tb.innerHTML+="<tr><td>"+coin+"</td><td>"+coins[coin]+"</td><td>"+ worth +"</td></tr>";
 	});
