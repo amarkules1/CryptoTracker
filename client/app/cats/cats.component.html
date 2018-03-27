@@ -51,18 +51,9 @@
     </table>
   </div>
 </div>
+
 <div class="card" *ngIf="!isEditing">
-  <h4 class="card-header">select site</h4>
-  <div class="card-body">
-<select class="form-control mr-2" name="type" [(ngModel)]="cat.type" required>
-	<option value="Buy" >Buy</option>
-	<option value="Sell" >Sell</option>
-</select>
-<button class="btn btn-sm btn-primary" (click)="displayCats(selectedSite, cats)">Filter</button>
-</div>
-</div>
-<div class="card" *ngIf="!isEditing">
-  <h4 class="card-header">Add new username</h4>
+  <h4 class="card-header">Add new transaction</h4>
   <div class="card-body">
     <form class="form-inline" [formGroup]="addCatForm" (ngSubmit)="addCat()">
 	  <input class="form-control mr-2" id='coinName' type="text" name="coin" [(ngModel)]="cat.coin" placeholder="Coin" formControlName="coin" required>
