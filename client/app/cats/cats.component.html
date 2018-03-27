@@ -65,7 +65,7 @@
   <h4 class="card-header">Add new username</h4>
   <div class="card-body">
     <form class="form-inline" [formGroup]="addCatForm" (ngSubmit)="addCat()">
-	  <input class="form-control mr-2" id='coinName' onkeydown="coinExists()" type="text" name="coin" [(ngModel)]="cat.coin" placeholder="Coin" formControlName="coin" required>
+	  <input class="form-control mr-2" id='coinName' type="text" name="coin" [(ngModel)]="cat.coin" placeholder="Coin" formControlName="coin" required>
       <input class="form-control mr-2" type="text" name="amount" [(ngModel)]="cat.amount" placeholder="Amount" formControlName="amount" required>
 	  <select class="form-control mr-2" name="type" [(ngModel)]="cat.type" formControlName="type" required>
 		<option value="Buy" >Buy</option>

@@ -88,6 +88,8 @@ export class CatsComponent implements OnInit {
     );
   }
   
+  
+  
   deleteCat(cat: Cat) {
     if (window.confirm('Are you sure you want to permanently delete this item?')) {
       this.catService.deleteCat(cat).subscribe(
@@ -102,6 +104,7 @@ export class CatsComponent implements OnInit {
   }
 
 }
+
 
 //invalid solution
 //var user = document.getElementById("getUserFrom").innerHTML.split("(\(|\))")[1];
